@@ -1,0 +1,930 @@
+/*--------------------------------------------------------------------------------
+ # Google Fonts
+ --------------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap');
+
+/*--------------------------------------------------------------------------------
+ # Global Variables
+ --------------------------------------------------------------------------------*/
+:root {
+    /* House palette, named after the convention used across the group projects */
+    --color-01: #b59b5e;
+    --color-01-a: rgba(181, 155, 94, .14);
+    --color-02: #2f2f2f;
+    --color-03: #70798c;
+    --color-04: #7a8b83;
+    --color-05: #a89f91;
+
+    /* Surfaces */
+    --color-bg: #f4f4f4;
+    --color-surface: #ffffff;
+    --color-surface-alt: #fbfaf7;
+    --color-line: #ececec;
+
+    /* Layout */
+    --app-max-width: 600px;
+    --radius-block: 16px;
+    --radius-card: 16px;
+    --nav-height: 62px;
+
+    /* Typography */
+    --ff-heading: 'Poppins', sans-serif;
+    --ff-body: 'Roboto', sans-serif;
+}
+
+/*--------------------------------------------------------------------------------
+ # Geral
+ --------------------------------------------------------------------------------*/
+html {
+    /* The directory is read on a phone: keep the text size the guest chose */
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    /* The area around the application container */
+    background-color: var(--color-bg);
+    color: var(--color-02);
+    font-family: var(--ff-body);
+    font-weight: 400;
+    line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--ff-heading);
+    font-weight: 600;
+}
+
+a {
+    color: var(--color-01);
+    text-decoration: none;
+}
+
+a:hover,
+a:active,
+a:focus {
+    color: var(--color-02);
+    text-decoration: none;
+}
+
+/* One visible focus ring for the whole application: the guests navigating with a
+   keyboard or a switch need to see where they are. */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--color-01);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/*--------------------------------------------------------------------------------
+ # Application container
+ --------------------------------------------------------------------------------*/
+.app {
+    /* Simulates a native mobile application on desktop screens */
+    position: relative;
+    width: 100%;
+    max-width: var(--app-max-width);
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--color-surface);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .08);
+    /* Clears the fixed bottom bar so it never hides the last block.
+       The inset resolves to 0 on every device without a home indicator. */
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+}
+
+/*--------------------------------------------------------------------------------
+ # Top Bar
+ --------------------------------------------------------------------------------*/
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: 1.1rem 1.25rem;
+}
+
+.topbar-title {
+    margin: 0;
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--color-02);
+    text-align: center;
+}
+
+.topbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .2rem;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: var(--color-01);
+    background: none;
+    border: 0;
+    transition: color .25s ease-in-out;
+}
+
+.topbar-icon:hover,
+.topbar-icon:active {
+    color: var(--color-02);
+}
+
+/*--------------------------------------------------------------------------------
+ # Group logo
+ --------------------------------------------------------------------------------*/
+.group-logo {
+    padding: .25rem 1.25rem 1.75rem;
+    text-align: center;
+}
+
+.group-logo img {
+    width: 62%;
+    max-width: 220px;
+    height: auto;
+    object-fit: contain;
+}
+
+/*--------------------------------------------------------------------------------
+ # Property cards
+ --------------------------------------------------------------------------------*/
+.property-list {
+    padding: 0 1.25rem;
+}
+
+.property-list-empty {
+    padding: 2rem 0;
+    font-size: .9rem;
+    color: var(--color-03);
+    text-align: center;
+}
+
+.hotel-card {
+    position: relative;
+    display: block;
+    height: 220px;
+    /* Fallback tone, so a photograph that fails to load still leaves a dark
+       panel behind the gradient instead of a white gap. */
+    background-color: var(--color-02);
+    margin-bottom: 1.25rem;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .1);
+    transition: transform .25s ease-in-out, box-shadow .25s ease-in-out;
+}
+
+.hotel-card:hover,
+.hotel-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .14);
+}
+
+.hotel-card-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease-in-out;
+}
+
+.hotel-card:hover .hotel-card-image {
+    transform: scale(1.04);
+}
+
+/* Dark gradient rising from the bottom edge: it is what keeps the white text
+   readable whatever the photograph behind it. */
+.hotel-card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+    color: #fff;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, .85) 0%,
+            rgba(0, 0, 0, .5) 45%,
+            rgba(0, 0, 0, 0) 100%);
+}
+
+.hotel-card-category {
+    margin-bottom: .35rem;
+    font-size: .66rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .85;
+}
+
+.hotel-card-name {
+    margin-bottom: .3rem;
+    font-family: var(--ff-heading);
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.hotel-card-location {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .84rem;
+    opacity: .92;
+}
+
+/*--------------------------------------------------------------------------------
+ # Sticky hotel top bar
+ --------------------------------------------------------------------------------*/
+.hotel-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .7rem 1rem;
+    background-color: rgba(255, 255, 255, .96);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-line);
+    transition: box-shadow .3s ease-in-out;
+}
+
+/* Added by main.js once the page has been scrolled */
+.hotel-topbar.is-scrolled {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .07);
+}
+
+.hotel-topbar-logo {
+    width: auto;
+    max-width: 60%;
+    max-height: 44px;
+    object-fit: contain;
+}
+
+.hotel-topbar-back,
+.hotel-topbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    font-size: 1.15rem;
+    color: var(--color-01);
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    transition: color .25s ease-in-out, background-color .25s ease-in-out;
+}
+
+.hotel-topbar-back:hover,
+.hotel-topbar-icon:hover {
+    color: var(--color-02);
+    background-color: var(--color-01-a);
+}
+
+/*--------------------------------------------------------------------------------
+ # Hotel header
+ --------------------------------------------------------------------------------*/
+.hotel-header {
+    padding: 1.6rem 1.25rem 1.35rem;
+}
+
+.hotel-header-name {
+    margin: 0 0 .5rem;
+    font-size: 1.45rem;
+    line-height: 1.25;
+}
+
+.hotel-header-location {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    margin: 0 0 .6rem;
+    font-size: .84rem;
+    color: var(--color-01);
+}
+
+.hotel-header-tagline {
+    margin: 0;
+    font-size: .9rem;
+    color: var(--color-03);
+}
+
+/*--------------------------------------------------------------------------------
+ # Info blocks - shared
+ --------------------------------------------------------------------------------*/
+.block {
+    position: relative;
+    margin: 0 1.25rem 1.25rem;
+    border-radius: var(--radius-block);
+    overflow: hidden;
+}
+
+.block-title {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin: 0 0 .9rem;
+    font-size: 1.03rem;
+    font-weight: 600;
+}
+
+.block-title-dark {
+    color: var(--color-02);
+}
+
+/*--------------------------------------------------------------------------------
+ # Image block
+ --------------------------------------------------------------------------------*/
+.block-image {
+    display: flex;
+    align-items: flex-end;
+    min-height: 280px;
+    /* Same fallback as the property cards: the overlay is designed to sit on a
+       dark ground, so it keeps reading as a panel if the picture never arrives. */
+    background-color: var(--color-02);
+}
+
+.block-image-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dark overlay over the photograph, so the white text stays readable */
+.block-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, .9) 0%,
+            rgba(0, 0, 0, .6) 55%,
+            rgba(0, 0, 0, .35) 100%);
+}
+
+.block-image-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 1.5rem;
+    color: #fff;
+}
+
+.block-intro {
+    margin: -.35rem 0 .9rem;
+    font-size: .84rem;
+    opacity: .9;
+}
+
+.block-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.block-list-item {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    padding: .45rem 0;
+    font-size: .86rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+
+.block-list-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.block-list-item i {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    font-size: .95rem;
+    color: var(--color-01);
+}
+
+.block-list-label {
+    flex: 0 0 auto;
+    font-weight: 500;
+}
+
+.block-list-value {
+    margin-left: auto;
+    text-align: right;
+    opacity: .88;
+}
+
+/*--------------------------------------------------------------------------------
+ # Solid colour block
+ --------------------------------------------------------------------------------*/
+.block-solid {
+    padding: 1.5rem;
+    color: #fff;
+}
+
+.block-solid-sage {
+    background-color: var(--color-04);
+}
+
+.block-solid-taupe {
+    background-color: var(--color-05);
+}
+
+.block-solid-header {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: .9rem;
+}
+
+.block-solid-header .block-title {
+    margin: 0;
+}
+
+.block-solid-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    background-color: rgba(255, 255, 255, .16);
+    border-radius: 50%;
+}
+
+.block-text {
+    margin: 0;
+    font-size: .89rem;
+    line-height: 1.6;
+    opacity: .95;
+}
+
+.block-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .85rem 1.75rem;
+    margin: 1.1rem 0 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, .2);
+}
+
+.block-detail dt {
+    margin-bottom: .1rem;
+    font-size: .66rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    opacity: .8;
+}
+
+.block-detail dd {
+    margin: 0;
+    font-size: .92rem;
+    font-weight: 500;
+}
+
+.block-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    margin: 1.1rem 0 0;
+    font-size: .77rem;
+    line-height: 1.5;
+    opacity: .9;
+}
+
+.block-note i {
+    flex: 0 0 auto;
+    margin-top: .15rem;
+}
+
+/*--------------------------------------------------------------------------------
+ # Actions block
+ --------------------------------------------------------------------------------*/
+.block-actions {
+    padding: 1.35rem 1.25rem .35rem;
+    background-color: var(--color-surface-alt);
+    border: 1px solid #f0ece4;
+}
+
+.action-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: .85rem 0;
+    color: inherit;
+    border-top: 1px solid var(--color-line);
+    transition: background-color .2s ease-in-out;
+}
+
+.action-list li:first-child .action {
+    border-top: 0;
+}
+
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.05rem;
+    color: var(--color-01);
+    background-color: var(--color-01-a);
+    border-radius: 12px;
+}
+
+.action-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.action-label {
+    display: block;
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--color-02);
+}
+
+.action-value {
+    display: block;
+    font-size: .78rem;
+    color: var(--color-03);
+    /* A long address must not push the arrow out of the card */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.action-arrow {
+    flex: 0 0 auto;
+    font-size: .85rem;
+    color: #c9c9c9;
+}
+
+.action:hover .action-label,
+.action:active .action-label {
+    color: var(--color-01);
+}
+
+.directory-empty {
+    margin: 0 1.25rem 1.25rem;
+    padding: 1.5rem;
+    font-size: .88rem;
+    color: var(--color-03);
+    text-align: center;
+    background-color: var(--color-surface-alt);
+    border-radius: var(--radius-block);
+}
+
+/*--------------------------------------------------------------------------------
+ # Bottom navigation
+ --------------------------------------------------------------------------------*/
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    /* Kept centred over the application container, which is what a plain
+       "left: 0" would miss on a desktop screen. */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1030;
+    display: flex;
+    width: 100%;
+    max-width: var(--app-max-width);
+    background-color: rgba(255, 255, 255, .97);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--color-line);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, .06);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    gap: .2rem;
+    padding: .7rem .25rem;
+    font-size: .68rem;
+    color: var(--color-03);
+    text-align: center;
+    transition: color .25s ease-in-out;
+}
+
+.bottom-nav-item i {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item:active,
+.bottom-nav-item.active {
+    color: var(--color-01);
+}
+
+/*--------------------------------------------------------------------------------
+ # Settings sheet
+ --------------------------------------------------------------------------------*/
+.offcanvas.settings-sheet {
+    /* Bootstrap anchors an end sheet to the edge of the window. Here the right
+       edge follows the application container instead, so the sheet slides in
+       over the "phone" and not over the grey area beside it. */
+    right: max(0px, calc(50% - (var(--app-max-width) / 2)));
+    width: min(400px, 100%);
+}
+
+.settings-sheet .offcanvas-header {
+    align-items: flex-start;
+    padding: 1.35rem 1.35rem 1rem;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.settings-sheet-title {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.settings-sheet-subtitle {
+    margin: .2rem 0 0;
+    font-size: .8rem;
+    color: var(--color-01);
+}
+
+.settings-sheet .offcanvas-body {
+    padding: 1.35rem;
+}
+
+.settings-sheet-heading {
+    margin: 0 0 .75rem;
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--color-03);
+}
+
+.settings-sheet-heading:not(:first-child) {
+    margin-top: 1.85rem;
+}
+
+.settings-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.settings-link {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .7rem 0;
+    color: inherit;
+}
+
+.settings-link-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+    color: var(--color-01);
+    background-color: var(--color-01-a);
+    border-radius: 12px;
+}
+
+.settings-link-icon-alert {
+    color: #a4544b;
+    background-color: rgba(164, 84, 75, .12);
+}
+
+.settings-link-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.settings-link-label {
+    display: block;
+    font-size: .89rem;
+    font-weight: 500;
+}
+
+.settings-link-value {
+    display: block;
+    font-size: .78rem;
+    color: var(--color-03);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.settings-link-arrow {
+    flex: 0 0 auto;
+    font-size: .8rem;
+    color: #c9c9c9;
+}
+
+.settings-about {
+    margin: 0 0 .5rem;
+    font-size: .84rem;
+    line-height: 1.6;
+    color: var(--color-03);
+}
+
+.settings-version {
+    margin: 0;
+    font-size: .72rem;
+    color: #a5a5a5;
+}
+
+/*--------------------------------------------------------------------------------
+ # Footer
+ --------------------------------------------------------------------------------*/
+.app-footer {
+    margin-top: 1rem;
+    padding: 1.6rem 1.25rem 1.75rem;
+    text-align: center;
+    border-top: 1px solid var(--color-line);
+}
+
+.app-footer-copyright {
+    margin: 0 0 .3rem;
+    font-size: .78rem;
+    color: var(--color-03);
+}
+
+.app-footer-note {
+    margin: 0;
+    font-size: .72rem;
+    color: #a5a5a5;
+}
+
+/*--------------------------------------------------------------------------------
+ # Error page
+ --------------------------------------------------------------------------------*/
+.error-page {
+    padding: 3.5rem 1.75rem;
+    text-align: center;
+}
+
+.error-page-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: var(--color-01);
+    background-color: var(--color-01-a);
+    border-radius: 50%;
+}
+
+.error-page-title {
+    margin-bottom: .85rem;
+    font-size: 1.35rem;
+}
+
+.error-page-text {
+    margin-bottom: 2rem;
+    font-size: .89rem;
+    color: var(--color-03);
+}
+
+.btn-accent {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .8rem 1.6rem;
+    font-size: .88rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: var(--color-01);
+    border-radius: 999px;
+    transition: background-color .3s ease-in-out;
+}
+
+.btn-accent:hover,
+.btn-accent:active {
+    color: #fff;
+    background-color: var(--color-02);
+}
+
+/*--------------------------------------------------------------------------------
+ # Entrance animation
+ --------------------------------------------------------------------------------*/
+@keyframes app-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.property-list>.hotel-card,
+.directory>.block {
+    animation: app-fade-up .45s ease-out both;
+}
+
+/* Slight stagger, so the blocks arrive one after another instead of all at once */
+.directory>.block:nth-child(2) {
+    animation-delay: .06s;
+}
+
+.directory>.block:nth-child(3) {
+    animation-delay: .12s;
+}
+
+.directory>.block:nth-child(4) {
+    animation-delay: .18s;
+}
+
+.directory>.block:nth-child(5) {
+    animation-delay: .24s;
+}
+
+.directory>.block:nth-child(6) {
+    animation-delay: .3s;
+}
+
+/* Guests who asked their device to reduce motion get the page without movement */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+}
+
+/*--------------------------------------------------------------------------------
+ # Responsive
+ --------------------------------------------------------------------------------*/
+
+/* Small phones: the cards and the blocks tighten up a little */
+@media (max-width: 380px) {
+    .hotel-card {
+        height: 200px;
+    }
+
+    .hotel-header-name {
+        font-size: 1.28rem;
+    }
+
+    .block-image {
+        min-height: 250px;
+    }
+
+    .block-image-content,
+    .block-solid {
+        padding: 1.25rem;
+    }
+}
+
+/* Narrow phones: a label and its value stop sharing one line. Kept together they
+   leave the value wrapped into a column two or three words wide, which is harder
+   to read than a second line indented under the label. */
+@media (max-width: 400px) {
+    /* The row has to be allowed to wrap, otherwise the value below would
+       overflow the block instead of dropping onto a line of its own. */
+    .block-list-item {
+        flex-wrap: wrap;
+    }
+
+    .block-list-value {
+        /* 100% basis forces the value onto its own line, indented to clear the
+           icon (1.1rem) and the gap after it (.6rem). */
+        flex: 1 0 100%;
+        margin-left: 1.7rem;
+        text-align: left;
+    }
+}
+
+/* Wider phones and the 600px desktop container: the cards grow with it */
+@media (min-width: 480px) {
+    .hotel-card {
+        height: 240px;
+    }
+}

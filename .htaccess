@@ -1,0 +1,55 @@
+# Friendly URL routing.
+#
+# Every request that does not match a real file or directory is handed to the
+# front controller, which receives the requested path in the "route" argument.
+# The guest therefore only ever sees clean addresses such as /selection or
+# /miramar-spa, never an index.php?... query string.
+#
+# There is deliberately no RewriteBase directive here. In a per-directory file the
+# substitution of a rule that does not begin with a slash is resolved against the
+# directory the file sits in, which is what makes this work at any depth: at the
+# domain root, in /hotels/miramarguest, or anywhere else. Declaring
+# "RewriteBase /" overrides that and sends every request to the root instead,
+# which answers 404 as soon as the application is not installed there.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Folders that PHP only ever includes from and never serves. They hold no page
+    # of their own, and a request that reached them would at best print a fragment
+    # of a layout and at worst hand out the content of the data files as plain
+    # text. Everything below is refused before any other rule can see it.
+    RewriteRule ^(config|controllers|models|views)(/|$) - [F,L]
+
+    # Existing files and directories - CSS, JS, images, fonts - are served as
+    # they are and never reach PHP.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else is routed to the front controller. The original path is
+    # passed along so that index.php can match it against the route table.
+    # "QSA" keeps any query string the request already carried.
+    RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+</IfModule>
+
+# Directory listings are never useful here and would expose the folder layout.
+Options -Indexes
+
+# Guests read this directory on hotel Wi-Fi, often on an older browser: no
+# aggressive caching, but the static assets may be kept for a week.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+# The content of this application is Portuguese; telling the browser avoids the
+# "translate this page" prompt for guests reading on a foreign phone.
+<IfModule mod_headers.c>
+    Header set Content-Language "pt-PT"
+</IfModule>
