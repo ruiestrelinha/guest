@@ -1,0 +1,6 @@
+# Ignore folders
+.vscode/
+.claude/
+assets/images/
+assets/vendor/
+pdf/
